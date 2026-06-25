@@ -224,12 +224,31 @@ const App: React.FC = () => {
                 }
             }
 
+            await document.fonts.ready;
             // Captura o texto com alta escala
             const textCanvas = await html2canvas(pageElement, {
                 scale: 4, 
                 backgroundColor: null,
                 useCORS: true,
                 logging: false,
+                onclone: (clonedDoc) => {
+                    const link1 = clonedDoc.createElement('link');
+                    link1.rel = 'preconnect';
+                    link1.href = 'https://fonts.googleapis.com';
+                    clonedDoc.head.appendChild(link1);
+
+                    const link2 = clonedDoc.createElement('link');
+                    link2.rel = 'preconnect';
+                    link2.href = 'https://fonts.gstatic.com';
+                    link2.crossOrigin = 'anonymous';
+                    clonedDoc.head.appendChild(link2);
+
+                    const link3 = clonedDoc.createElement('link');
+                    link3.rel = 'stylesheet';
+                    link3.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Oswald:wght@700&display=swap';
+                    link3.crossOrigin = 'anonymous';
+                    clonedDoc.head.appendChild(link3);
+                }
             });
             const textImgData = textCanvas.toDataURL('image/png');
 
